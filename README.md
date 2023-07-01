@@ -10,7 +10,7 @@ Started from template repository for datascience projects [datascience-project-t
 
 ```bash
 .
-├── data                            # [Usually added to .gitignore for data privacy]
+├── data                            # [For data privacy add it to .gitignore]
 ├── models                          # [Store models]
 ├── notebooks                       # [Notebooks. Depending on the project, notebooks may be added to .gitignore]
 │   └── template.ipynb              # [A notebook with usual setups]   
@@ -18,6 +18,7 @@ Started from template repository for datascience projects [datascience-project-t
 │   └── __init__.py                 # [Make src a Python module]
 ├── helpers                         # [Useful ready-to-use helpers]
 │   └── __init__.py                 # [Make helpers a Python module]
+├── configs                         # [Add it to .gitignore]
 ├── docs                            # [Documentation for the project]
 ├── visuals                         # [Store visuals]
 ├── requirements.txt                # [Requirements (using pipreqs)]
