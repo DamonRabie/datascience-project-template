@@ -28,19 +28,19 @@ projects [datascience-project-template](https://github.com/DamonRabie/datascienc
 ├── visuals                         # [Store visuals]
 ├── requirements.txt                # [Requirements (using pipreqs on src directory)]
 ├── requirements_manual.txt         # [Requirements (manually)]
-├── .gitignore                      # [Ignore files that cannot be committed to Git]
-└── README.md                       # [Describe your project]
+├── .gitignore                      # [Ignore files that should not be committed to Git]
+└── README.md                       # [Describe the project]
 ```
 
 ## Getting Started
 
-[Provide instructions on how to get the project up and running on a local machine]
-
-1. Rename the project
+1. Set project title
 2. Write an executive summary
-3. If data is private, add data directory to .gitignore
+3. If data is private or too big, add data directory to .gitignore
 4. Add config directory to .gitignore
-5. Start the development phase :blush:
+5. Start developing :blush:
+
+[Provide instructions on how to get the project up and running on a local machine]
 
 ## Details
 
