@@ -124,9 +124,3 @@ venv.bak/
 # Jetbrains
 .idea
 .idea/*
-
-# Data Files
-data/
-
-# config file
-configs/

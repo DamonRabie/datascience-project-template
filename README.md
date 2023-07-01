@@ -13,7 +13,7 @@ Started from template repository for datascience projects [datascience-project-t
 ├── data                            # [Usually added to .gitignore for data privacy]
 ├── models                          # [Store models]
 ├── notebooks                       # [Notebooks. Depending on the project, notebooks may be added to .gitignore]
-│   └── template_notebook.py        # [A notebook with usual setups]   
+│   └── template.ipynb              # [A notebook with usual setups]   
 ├── src                             # [Store source code used in notebooks]
 │   └── __init__.py                 # [Make src a Python module]
 ├── helpers                         # [Useful ready-to-use helpers]
