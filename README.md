@@ -34,10 +34,10 @@ projects [datascience-project-template](https://github.com/DamonRabie/datascienc
 
 ## Getting Started
 
-1. Set project title
+1. Name the project
 2. Write an executive summary
 3. If data is private or too big, add data directory to .gitignore
-4. Add config directory to .gitignore
+4. Add configs directory to .gitignore
 5. Start developing :blush:
 
 [Provide instructions on how to get the project up and running on a local machine]
