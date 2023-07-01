@@ -23,6 +23,7 @@ projects [datascience-project-template](https://github.com/DamonRabie/datascienc
 │   └── clickhouse_connection.py    # [Connect & run queries on Clickhouse]
 │   └── sql_server_connection.py    # [Connect & run queries on SQL Server]
 ├── configs                         # [Add it to .gitignore]
+│   └── config.cfg                  # [Sample config file]
 ├── docs                            # [Documentation for the project]
 ├── visuals                         # [Store visuals]
 ├── requirements.txt                # [Requirements (using pipreqs on src directory)]
