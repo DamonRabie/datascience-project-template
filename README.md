@@ -1,6 +1,7 @@
 # [Project Name]
 
-Started from template repository for datascience projects [datascience-project-template](https://github.com/DamonRabie/datascience-project-template)
+Started from template repository for datascience
+projects [datascience-project-template](https://github.com/DamonRabie/datascience-project-template)
 
 ## Project Overview
 
@@ -18,10 +19,13 @@ Started from template repository for datascience projects [datascience-project-t
 │   └── __init__.py                 # [Make src a Python module]
 ├── helpers                         # [Useful ready-to-use helpers]
 │   └── __init__.py                 # [Make helpers a Python module]
+│   └── sklearn_helper.py           # [Most used Sklearn APIs & useful plotting functions]
+│   └── clickhouse_connection.py    # [Connect & run queries on Clickhouse]
+│   └── sql_server_connection.py    # [Connect & run queries on SQL Server]
 ├── configs                         # [Add it to .gitignore]
 ├── docs                            # [Documentation for the project]
 ├── visuals                         # [Store visuals]
-├── requirements.txt                # [Requirements (using pipreqs)]
+├── requirements.txt                # [Requirements (using pipreqs on src directory)]
 ├── requirements_manual.txt         # [Requirements (manually)]
 ├── .gitignore                      # [Ignore files that cannot be committed to Git]
 └── README.md                       # [Describe your project]
@@ -35,11 +39,16 @@ Started from template repository for datascience projects [datascience-project-t
 
 [Provide details of the project]
 
+## Sources
+
+[List all the sources used in this project]
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
 
-The MIT License is a permissive open source license that allows you to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software. It also provides an express disclaimer of warranty and liability.
+The MIT License is a permissive open source license that allows you to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the software. It also provides an express disclaimer of warranty and liability.
 
 For more information, please refer to the [LICENSE](LICENSE) file.
 
