@@ -36,6 +36,12 @@ projects [datascience-project-template](https://github.com/DamonRabie/datascienc
 
 [Provide instructions on how to get the project up and running on a local machine]
 
+1. Rename the project
+2. Write an executive summary
+3. If data is private, add data directory to .gitignore
+4. Add config directory to .gitignore
+5. Start the development phase :blush:
+
 ## Details
 
 [Provide details of the project]
