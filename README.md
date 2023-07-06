@@ -25,7 +25,7 @@ projects [datascience-project-template](https://github.com/DamonRabie/datascienc
 ├── configs                         # [Add it to .gitignore]
 │   └── config.cfg                  # [Sample config file]
 ├── docs                            # [Documentation for the project]
-├── visuals                         # [Store visuals]
+├── artifacts                       # [Store visuals]
 ├── requirements.txt                # [Requirements (using pipreqs on src directory)]
 ├── requirements_manual.txt         # [Requirements (manually)]
 ├── .gitignore                      # [Ignore files that should not be committed to Git]
