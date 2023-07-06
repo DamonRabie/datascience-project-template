@@ -1,8 +1,5 @@
 # [Project Name]
 
-Started from template repository for datascience
-projects [datascience-project-template](https://github.com/DamonRabie/datascience-project-template)
-
 ## Project Overview
 
 [write an executive summary for the project]
@@ -49,6 +46,7 @@ projects [datascience-project-template](https://github.com/DamonRabie/datascienc
 ## Sources
 
 [List all the sources used in this project]
+1. [datascience-project-template](https://github.com/DamonRabie/datascience-project-template)
 
 ## License
 
