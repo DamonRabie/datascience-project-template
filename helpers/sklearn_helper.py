@@ -267,15 +267,34 @@ def plot_prc_curve(name, labels, predictions=None, features=None, model=None, cv
     plt.grid(color='grey', linestyle='--', linewidth=0.5, which="both")
 
 
-# Function to plot ROC curve
-def plot_roc(name, labels, predictions=None, features=None, model=None, cv=3, random_curve=True, **kwargs):
+def plot_roc_curve(name, labels, predictions=None, features=None, model=None, cv=3, random_curve=True, **kwargs):
+    """
+    Plot Receiver Operating Characteristic (ROC) curve for a binary classification model.
+
+    Parameters:
+        name (str): The name of the curve for the legend.
+        labels (array-like): The true labels of the data.
+        predictions (array-like, optional): The predicted probabilities or scores from the model.
+        features (array-like, optional): The input features if 'model' is provided.
+        model (object, optional): The machine learning model. If provided, predictions will be computed using
+                                  cross-validation.
+        cv (int, optional): Number of cross-validation folds. Default is 3.
+        random_curve (bool, optional): Whether to plot the ROC curve of a random classifier. Default is True.
+        **kwargs: Additional keyword arguments to pass to plt.plot().
+
+    Returns:
+        None
+    """
     if model is not None:
         predictions = compute_cross_val_predict_scores(model, features, labels, cv)
 
     fpr, tpr, thresholds = roc_curve(labels, predictions)
 
+    # Plot ROC Curve
     plt.plot(fpr, tpr, label=name, linewidth=2, **kwargs)
+
     if random_curve:
+        # Plot the ROC curve of a random classifier
         plt.plot([0, 1], [0, 1], 'k:', label="Random classifier's ROC curve")
 
     # Adding an arrow and text to indicate the direction of higher threshold
