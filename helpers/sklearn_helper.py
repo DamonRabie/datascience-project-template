@@ -1,10 +1,10 @@
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 from sklearn.metrics import precision_recall_curve, roc_curve, confusion_matrix, \
     precision_recall_fscore_support, f1_score, recall_score, precision_score
 from sklearn.model_selection import train_test_split, cross_val_predict
+from sklearn.utils.multiclass import unique_labels
 
 
 def get_train_test(X, y, test_size=0.2, random_state=42, stratify=True):
@@ -179,14 +179,54 @@ def plot_metrics(history, metrics=None, nrows=2, ncols=2, figsize=(12, 10), **kw
     return fig
 
 
-# Function to plot the confusion matrix
-def plot_confusion_matrix(labels, predictions, p=0.5):
+def plot_confusion_matrix(labels, predictions, p=0.5, normalize=False, cmap='Blues', ax=None):
+    """
+    Plot the confusion matrix for binary classification.
+
+    Parameters:
+        labels (array-like): True labels of the data.
+        predictions (array-like): Predicted probabilities or scores of the data.
+        p (float, optional): Threshold value to convert probabilities/scores to binary predictions. Default is 0.5.
+        normalize (bool, optional): If True, the confusion matrix will be normalized. Default is False.
+        cmap (str, optional): Colormap for the heatmap. Default is 'Blues'.
+        ax (matplotlib Axes, optional): The Axes object to plot the confusion matrix. If not provided, a new figure will be created.
+
+    Returns:
+        matplotlib Axes: The Axes object containing the plotted confusion matrix.
+    """
     cm = confusion_matrix(labels, predictions > p)
-    fig = plt.figure(figsize=(5, 5))
-    sns.heatmap(cm, annot=True, fmt="d")
-    plt.title('Confusion matrix @{:.2f}'.format(p))
-    plt.ylabel('Actual label')
-    plt.xlabel('Predicted label')
+    classes = unique_labels(labels, predictions > p)
+
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+    if ax is None:
+        fig, ax = plt.subplots()
+    else:
+        fig = ax.figure
+
+    im = ax.imshow(cm, interpolation='nearest', cmap=cmap)
+    ax.figure.colorbar(im, ax=ax)
+    ax.set(xticks=np.arange(cm.shape[1]),
+           yticks=np.arange(cm.shape[0]),
+           xticklabels=classes, yticklabels=classes,
+           title='Confusion matrix',
+           ylabel='True label',
+           xlabel='Predicted label')
+
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(j, i, format(cm[i, j], fmt),
+                    ha="center", va="center",
+                    color="white" if cm[i, j] > thresh else "black")
+
+    ax.set_ylim(len(classes) - 0.5, -0.5)
+    plt.tight_layout()
+
+    return ax
 
 
 # Function to plot precision-recall curves with different thresholds
