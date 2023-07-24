@@ -63,23 +63,45 @@ def compute_cross_val_predict_scores(model, X, y, cv=3):
             "Model does not have either decision_function or predict_proba attributes")  # Corrected the exception type to ValueError
 
 
-# Function to plot various metrics during model training
-def plot_metrics(history, **kwargs):
-    metrics = ['loss', 'prc', 'precision', 'recall']
-    fig = plt.figure()
+def plot_metrics(history, metrics=None, nrows=2, ncols=2, figsize=(12, 10), **kwargs):
+    """
+    Plot training metrics over epochs from model training history.
+
+    Parameters:
+        history (keras.callbacks.History): Model training history containing the metrics.
+        metrics (list): List of metrics to plot. If None, ['loss', 'prc', 'precision', 'recall'] will be used.
+        nrows (int): Number of rows in the subplot grid.
+        ncols (int): Number of columns in the subplot grid.
+        figsize (tuple): Figure size (width, height) in inches.
+        **kwargs: Additional keyword arguments to customize the plot.
+
+    Returns:
+        matplotlib.figure.Figure: The created matplotlib figure.
+    """
+    if metrics is None:
+        metrics = ['loss', 'prc', 'precision', 'recall']
+
+    fig = plt.figure(figsize=figsize)
+    gs = fig.add_gridspec(nrows, ncols)
+
     for n, metric in enumerate(metrics):
         name = metric.replace("_", " ").capitalize()
-        plt.subplot(2, 2, n + 1)
-        plt.plot(history.epoch, history.history[metric], label='Train', **kwargs)
-        plt.plot(history.epoch, history.history['val_' + metric], linestyle="--", label='Val', **kwargs)
-        plt.xlabel('Epoch')
-        plt.ylabel(name)
-        if metric == 'loss':
-            plt.ylim([0, plt.ylim()[1]])
-        else:
-            plt.ylim([0, 1.05])
+        ax = fig.add_subplot(gs[n // ncols, n % ncols])
+        ax.plot(history.epoch, history.history[metric], label='Train', **kwargs)
+        ax.plot(history.epoch, history.history['val_' + metric], linestyle="--", label='Val', **kwargs)
+        ax.set_xlabel('Epoch')
+        ax.set_ylabel(name)
 
-        plt.legend()
+        if metric == 'loss':
+            ax.set_ylim([0, ax.get_ylim()[1]])
+        else:
+            ax.set_ylim([0, 1.05])
+
+        ax.legend()
+
+    plt.tight_layout()
+
+    return fig
 
 
 # Function to plot the confusion matrix
