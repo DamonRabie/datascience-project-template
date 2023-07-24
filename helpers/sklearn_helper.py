@@ -8,9 +8,32 @@ from sklearn.metrics import precision_score, recall_score, precision_recall_curv
 from sklearn.model_selection import train_test_split, cross_val_predict
 
 
-# Function to split data into training and testing sets
-def get_train_test(X, y, test_size=0.2, random_state=42):
-    return train_test_split(X, y, test_size=test_size, random_state=random_state)
+def get_train_test(X, y, test_size=0.2, random_state=42, stratify=True):
+    """
+    Split the data into training and testing sets while preserving the class distribution (stratified sampling).
+
+    Parameters:
+        X (array-like): The input features.
+        y (array-like): The target labels.
+        test_size (float or int): The proportion of the dataset to include in the test split,
+                                  or the number of samples to include in the test split.
+        random_state (int or RandomState instance): Controls the randomness of the data shuffling.
+        stratify (bool): Whether to use stratified sampling based on the target labels or not.
+
+    Returns:
+        X_train (array-like): The training features.
+        X_test (array-like): The testing features.
+        y_train (array-like): The training labels.
+        y_test (array-like): The testing labels.
+    """
+    if stratify:
+        # Use stratified sampling to ensure balanced class distribution in training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
+    else:
+        # Use regular random sampling without preserving class distribution
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+
+    return X_train, X_test, y_train, y_test
 
 
 # Function to compute precision and recall scores for a given threshold
