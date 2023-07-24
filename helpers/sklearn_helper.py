@@ -1,36 +1,51 @@
-import numpy as np
-
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
 
-from sklearn.metrics import precision_score, recall_score, precision_recall_curve, roc_curve, confusion_matrix, f1_score
+from sklearn.metrics import precision_score, recall_score, precision_recall_curve, roc_curve, confusion_matrix, \
+    f1_score, classification_report
 from sklearn.model_selection import train_test_split, cross_val_predict
 
 
 def get_train_test(X, y, test_size=0.2, random_state=42):
     return train_test_split(X, y, test_size=test_size, random_state=random_state)
 
+
 def compute_precision_recall(labels, predictions, p=0.5):
     return precision_score(labels, predictions > p), recall_score(labels, predictions > p)
+
 
 def compute_f1_score(labels, predictions, p=0.5):
     return f1_score(labels, predictions > p)
 
-def find_opt_threshold(labels, predictions):
+
+def print_classification_report(labels, predictions, p=0.5, names=['class_0', 'class_1']):
+    print(classification_report(y_true=labels, y_pred=predictions >= p, target_names=names))
+
+
+def find_opt_threshold(labels, predictions, metric='f1'):
     best_threshold = 0
-    best_f1_score = 0
+    best_score = 0
 
     # Find the optimum threshold with the highest F1 score
-    for threshold in np.arange(0.1, 1.0, 0.1):
+    for threshold in np.arange(0.1, 1.0, 0.05):
         predictions_thresholded = (predictions >= threshold).astype(int)
-        f1 = f1_score(labels, predictions_thresholded)
+        if metric == 'f1':
+            m = f1_score(labels, predictions_thresholded)
+        elif metric == 'recall':
+            m = recall_score(labels, predictions_thresholded)
+        elif metric == 'precision':
+            m = precision_score(labels, predictions_thresholded)
+        else:
+            raise "Wrong metric"
 
-        if f1 > best_f1_score:
-            best_f1_score = f1
+        if m > best_score:
+            best_score = m
             best_threshold = threshold
 
     return best_threshold
+
 
 def compute_cross_val_predict_scores(model, X, y, cv=3):
     if hasattr(model, "decision_function"):
@@ -40,30 +55,33 @@ def compute_cross_val_predict_scores(model, X, y, cv=3):
     else:
         raise "Model does not have either decision_function or predict_proba attributes"
 
+
 def plot_metrics(history, **kwargs):
     metrics = ['loss', 'prc', 'precision', 'recall']
     fig = plt.figure()
     for n, metric in enumerate(metrics):
-        name = metric.replace("_"," ").capitalize()
-        plt.subplot(2,2,n+1)
+        name = metric.replace("_", " ").capitalize()
+        plt.subplot(2, 2, n + 1)
         plt.plot(history.epoch, history.history[metric], label='Train', **kwargs)
-        plt.plot(history.epoch, history.history['val_'+metric], linestyle="--", label='Val', **kwargs)
+        plt.plot(history.epoch, history.history['val_' + metric], linestyle="--", label='Val', **kwargs)
         plt.xlabel('Epoch')
         plt.ylabel(name)
         if metric == 'loss':
             plt.ylim([0, plt.ylim()[1]])
         else:
-            plt.ylim([0,1.05])
+            plt.ylim([0, 1.05])
 
         plt.legend()
 
+
 def plot_confusion_matrix(labels, predictions, p=0.5):
     cm = confusion_matrix(labels, predictions > p)
-    fig = plt.figure(figsize=(5,5))
+    fig = plt.figure(figsize=(5, 5))
     sns.heatmap(cm, annot=True, fmt="d")
     plt.title('Confusion matrix @{:.2f}'.format(p))
     plt.ylabel('Actual label')
     plt.xlabel('Predicted label')
+
 
 def plot_prc_threshold(name, labels, predictions=None, features=None, model=None, cv=3, **kwargs):
     if model is not None:
@@ -91,6 +109,7 @@ def plot_prc(name, labels, predictions=None, features=None, model=None, cv=3, **
     plt.xlabel("Recall")
     plt.ylabel("Precision")
     plt.grid(color='grey', linestyle='--', linewidth=0.5, which="both")
+
 
 def plot_roc(name, labels, predictions=None, features=None, model=None, cv=3, random_curve=True, **kwargs):
     if model is not None:
