@@ -100,15 +100,42 @@ def find_opt_threshold(labels, predictions, metric='f1'):
     return best_threshold
 
 
-# Function to compute cross-validated predictions scores
-def compute_cross_val_predict_scores(model, X, y, cv=3):
-    if hasattr(model, "decision_function"):
-        return cross_val_predict(model, X, y, cv=cv, method="decision_function")
-    elif hasattr(model, "predict_proba"):
-        return cross_val_predict(model, X, y, cv=cv, method="predict_proba")[:, 1]
-    else:
-        raise ValueError(
-            "Model does not have either decision_function or predict_proba attributes")  # Corrected the exception type to ValueError
+def compute_cross_val_predict_scores(model, X, y, cv=3, method='auto'):
+    """
+    Compute cross-validated prediction scores for a given model.
+
+    Parameters:
+        model (object): The machine learning model with either 'decision_function' or 'predict_proba' attributes.
+        X (array-like): The input features for the data.
+        y (array-like): The target labels for the data.
+        cv (int, cross-validation generator, or an iterable): Determines the cross-validation strategy.
+        method (str, optional): The method to be used for obtaining prediction scores.
+                                'auto' (default) will automatically choose 'decision_function' or 'predict_proba'
+                                based on the model's capabilities.
+                                'decision_function' and 'predict_proba' force the corresponding method.
+
+    Returns:
+        ndarray: The cross-validated prediction scores for the positive class.
+    """
+
+    # Check if the given model has either 'decision_function' or 'predict_proba' attributes
+    if not hasattr(model, "decision_function") and not hasattr(model, "predict_proba"):
+        raise ValueError("Model does not have either 'decision_function' or 'predict_proba' attributes")
+
+    # Determine the method to be used for obtaining prediction scores
+    if method == 'auto':
+        if hasattr(model, 'decision_function'):
+            method = 'decision_function'
+        elif hasattr(model, 'predict_proba'):
+            method = 'predict_proba'
+    elif method not in ('decision_function', 'predict_proba'):
+        raise ValueError("Invalid value for 'method', it should be 'auto', 'decision_function', or 'predict_proba'")
+
+    # Compute cross-validated prediction scores based on the selected method
+    if method == 'decision_function':
+        return cross_val_predict(model, X, y, cv=cv, method='decision_function')
+    elif method == 'predict_proba':
+        return cross_val_predict(model, X, y, cv=cv, method='predict_proba')[:, 1]
 
 
 def plot_metrics(history, metrics=None, nrows=2, ncols=2, figsize=(12, 10), **kwargs):
