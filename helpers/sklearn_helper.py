@@ -4,7 +4,7 @@ import numpy as np
 import seaborn as sns
 
 from sklearn.metrics import precision_score, recall_score, precision_recall_curve, roc_curve, confusion_matrix, \
-    f1_score, classification_report
+    f1_score, precision_recall_fscore_support
 from sklearn.model_selection import train_test_split, cross_val_predict
 
 
@@ -28,7 +28,8 @@ def get_train_test(X, y, test_size=0.2, random_state=42, stratify=True):
     """
     if stratify:
         # Use stratified sampling to ensure balanced class distribution in training and testing sets
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state,
+                                                            stratify=y)
     else:
         # Use regular random sampling without preserving class distribution
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
@@ -36,19 +37,25 @@ def get_train_test(X, y, test_size=0.2, random_state=42, stratify=True):
     return X_train, X_test, y_train, y_test
 
 
-# Function to compute precision and recall scores for a given threshold
-def compute_precision_recall(labels, predictions, p=0.5):
-    return precision_score(labels, predictions > p), recall_score(labels, predictions > p)
+def compute_classification_metrics(labels, predictions, threshold=0.5):
+    """
+    Compute precision, recall, F1-score, and support for binary classification.
 
+    Parameters:
+        labels (array-like): True binary labels.
+        predictions (array-like): Predicted probabilities or scores.
+        threshold (float, optional): Decision threshold for converting scores to binary predictions.
 
-# Function to compute F1 score for a given threshold
-def compute_f1_score(labels, predictions, p=0.5):
-    return f1_score(labels, predictions > p)
-
-
-# Function to print classification report for a given threshold
-def print_classification_report(labels, predictions, p=0.5, names=['class_0', 'class_1']):
-    print(classification_report(y_true=labels, y_pred=predictions >= p, target_names=names))
+    Returns:
+        dict: A dictionary containing precision, recall, F1-score, and support values for both classes.
+    """
+    binary_predictions = (predictions >= threshold).astype(int)
+    precision, recall, f1, support = precision_recall_fscore_support(labels, binary_predictions, average=None)
+    metrics_dict = {
+        'class_0': {'precision': precision[0], 'recall': recall[0], 'f1-score': f1[0], 'support': support[0]},
+        'class_1': {'precision': precision[1], 'recall': recall[1], 'f1-score': f1[1], 'support': support[1]}
+    }
+    return metrics_dict
 
 
 # Function to find the optimal threshold that maximizes the F1 score
