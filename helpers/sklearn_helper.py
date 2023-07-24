@@ -229,30 +229,38 @@ def plot_confusion_matrix(labels, predictions, p=0.5, normalize=False, cmap='Blu
     return ax
 
 
-# Function to plot precision-recall curves with different thresholds
-def plot_prc_threshold(name, labels, predictions=None, features=None, model=None, cv=3, **kwargs):
+def plot_prc_curve(name, labels, predictions=None, features=None, model=None, cv=3, threshold=True, **kwargs):
+    """
+    Plot Precision-Recall Curve for a binary classification model.
+
+    Parameters:
+        name (str): The name of the curve for the legend.
+        labels (array-like): The true labels of the data.
+        predictions (array-like, optional): The predicted probabilities or scores from the model.
+        features (array-like, optional): The input features if 'model' is provided.
+        model (object, optional): The machine learning model. If provided, predictions will be computed using
+                                  cross-validation.
+        cv (int, optional): Number of cross-validation folds. Default is 3.
+        threshold (bool, optional): Whether to plot threshold values on the curve. Default is True.
+        **kwargs: Additional keyword arguments to pass to plt.plot().
+
+    Returns:
+        None
+    """
     if model is not None:
         predictions = compute_cross_val_predict_scores(model, features, labels, cv)
 
     precisions, recalls, thresholds = precision_recall_curve(labels, predictions)
 
-    plt.figure()
-    plt.plot(thresholds, precisions[:-1], label=f'precision_{name}', linewidth=2, **kwargs)
-    plt.plot(thresholds, recalls[:-1], label=f'recall_{name}', linewidth=2, linestyle='--', **kwargs)
-    plt.legend(loc="lower right")
-    plt.xlabel("Threshold")
-    plt.ylabel("Precision/Recall Score")
-    plt.grid(color='grey', linestyle='--', linewidth=0.5, which="both")
-
-
-# Function to plot precision-recall curve
-def plot_prc(name, labels, predictions=None, features=None, model=None, cv=3, **kwargs):
-    if model is not None:
-        predictions = compute_cross_val_predict_scores(model, features, labels, cv)
-
-    precisions, recalls, thresholds = precision_recall_curve(labels, predictions)
-
+    # Plot Precision-Recall Curve
     plt.plot(recalls, precisions, label=name, linewidth=2, **kwargs)
+
+    if threshold:
+        # Plot threshold values on the curve
+        for i, thr in enumerate(thresholds):
+            plt.scatter(recalls[i], precisions[i], c='r', marker='x', s=50)
+            plt.text(recalls[i], precisions[i], f"{thr:.2f}", fontsize=8, verticalalignment='bottom')
+
     plt.legend(loc="lower right")
     plt.xlabel("Recall")
     plt.ylabel("Precision")
