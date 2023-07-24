@@ -2,9 +2,8 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-
-from sklearn.metrics import precision_score, recall_score, precision_recall_curve, roc_curve, confusion_matrix, \
-    f1_score, precision_recall_fscore_support
+from sklearn.metrics import precision_recall_curve, roc_curve, confusion_matrix, \
+    precision_recall_fscore_support, f1_score, recall_score, precision_score
 from sklearn.model_selection import train_test_split, cross_val_predict
 
 
@@ -58,23 +57,42 @@ def compute_classification_metrics(labels, predictions, threshold=0.5):
     return metrics_dict
 
 
-# Function to find the optimal threshold that maximizes the F1 score
 def find_opt_threshold(labels, predictions, metric='f1'):
+    """
+    Find the optimal threshold that maximizes the specified metric.
+
+    Parameters:
+        labels (array-like): True labels.
+        predictions (array-like): Predicted probabilities or scores from the model.
+        metric (str): The metric to optimize. Options: 'f1' (default), 'recall', 'precision'.
+
+    Returns:
+        float: The optimal threshold value that maximizes the specified metric.
+    """
+
+    # Define a dictionary to map the metric name to the corresponding scoring function
+    metric_to_scoring = {
+        'f1': f1_score,
+        'recall': recall_score,
+        'precision': precision_score
+    }
+
+    if metric not in metric_to_scoring:
+        raise ValueError("Invalid metric specified. Choose from 'f1', 'recall', or 'precision'.")
+
     best_threshold = 0
     best_score = 0
 
-    # Find the optimum threshold with the highest specified metric score
+    # Iterate over a range of thresholds and find the one that maximizes the metric
     for threshold in np.arange(0.1, 1.0, 0.05):
+        # Convert probabilities to binary predictions based on the threshold
         predictions_thresholded = (predictions >= threshold).astype(int)
-        if metric == 'f1':
-            m = f1_score(labels, predictions_thresholded)
-        elif metric == 'recall':
-            m = recall_score(labels, predictions_thresholded)
-        elif metric == 'precision':
-            m = precision_score(labels, predictions_thresholded)
-        else:
-            raise ValueError("Wrong metric")  # Corrected the exception type to ValueError
 
+        # Compute the specified metric score
+        scoring_function = metric_to_scoring[metric]
+        m = scoring_function(labels, predictions_thresholded)
+
+        # Update the best threshold and score if the current threshold performs better
         if m > best_score:
             best_score = m
             best_threshold = threshold
