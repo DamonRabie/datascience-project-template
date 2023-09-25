@@ -22,6 +22,7 @@
 ├── configs                         # [Add it to .gitignore]
 │   └── config.cfg                  # [Sample config file]
 ├── docs                            # [Documentation for the project]
+├── gradio                          # [Gradio template]
 ├── artifacts                       # [Store visuals]
 ├── requirements.txt                # [Requirements (using pipreqs on src directory)]
 ├── requirements_manual.txt         # [Requirements (manually)]
