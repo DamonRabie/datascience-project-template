@@ -1,61 +1,65 @@
-# [Project Name]
+Data Science Project Template
+==============================
 
-## Project Overview
+This is an adapted version of the Cookiecutter Data Science project template with some structural changes and the
+inclusion of custom scripts in the project.
 
-[write an executive summary for the project]
+Project Organization
+------------
 
-## Project Structure
+    ├── LICENSE
+    ├── Makefile           <- Makefile with commands like `make data` or `make train`
+    ├── README.md          <- The top-level README for developers using this project.
+    ├── data
+    │   ├── external       <- Data from third party sources.
+    │   ├── interim        <- Intermediate data that has been transformed.
+    │   ├── processed      <- The final, canonical data sets for modeling.
+    │   └── raw            <- The original, immutable data dump.
+    │
+    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    │
+    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    │
+    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
+    │                         the creator's initials, and a short `-` delimited description, e.g.
+    │                         `1.0-jqp-initial-data-exploration`.
+    │
+    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    │
+    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
+    │   └── figures        <- Generated graphics and figures to be used in reporting
+    │
+    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
+    │                         generated with `pip freeze > requirements.txt`
+    │
+    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
+    ├── src                <- Source code for use in this project.
+    │   ├── __init__.py    <- Makes src a Python module
+    │   │
+    │   ├── data           <- Scripts to download or generate data
+    │   │   └── make_dataset.py
+    │   │
+    │   ├── db_connectors  <- Scripts to connect to different databases
+    │   │   └── Clickhouse.py
+    │   │   └── SqlServer.py
+    │   │
+    │   ├── features       <- Scripts to turn raw data into features for modeling
+    │   │
+    │   ├── metrics        <- Scripts to calculate customized metrics
+    │   │   └── Classification.py
+    │   │
+    │   ├── models         <- Scripts to train models and then use trained models to make predictions.
+    │   │   │           Plus modules for specific model types
+    │   │   ├── ChatGpt.py
+    │   │   └── Prophet.py
+    │   │
+    │   ├── preprocess     <- Scripts to perform prepare data for modeling
+    │   │   └── EmailText.py
+    │   │
+    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
+    │
+    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 
-```bash
-.
-├── data                            # [For data privacy add it to .gitignore]
-├── models                          # [Store models]
-├── notebooks                       # [Notebooks. Depending on the project, notebooks may be added to .gitignore]
-│   └── template.ipynb              # [A notebook with usual setups]   
-├── src                             # [Store source code used in notebooks]
-│   └── __init__.py                 # [Make src a Python module]
-├── helpers                         # [Useful ready-to-use helpers]
-│   └── __init__.py                 # [Make helpers a Python module]
-│   └── sklearn_helper.py           # [Most used Sklearn APIs & useful plotting functions]
-│   └── clickhouse_connection.py    # [Connect & run queries on Clickhouse]
-│   └── sql_server_connection.py    # [Connect & run queries on SQL Server]
-├── configs                         # [Add it to .gitignore]
-│   └── config.cfg                  # [Sample config file]
-├── docs                            # [Documentation for the project]
-├── gradio                          # [Gradio template]
-├── artifacts                       # [Store visuals]
-├── requirements.txt                # [Requirements (using pipreqs on src directory)]
-├── requirements_manual.txt         # [Requirements (manually)]
-├── .gitignore                      # [Ignore files that should not be committed to Git]
-└── README.md                       # [Describe the project]
-```
+--------
 
-## Getting Started
-
-1. Name the project
-2. Write an executive summary
-3. If data is private or too big, add data directory to .gitignore
-4. Add configs directory to .gitignore
-5. Start developing :blush:
-
-[Provide instructions on how to get the project up and running on a local machine]
-
-## Details
-
-[Provide details of the project]
-
-## Sources
-
-[List all the sources used in this project]
-1. [datascience-project-template](https://github.com/DamonRabie/datascience-project-template)
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-The MIT License is a permissive open source license that allows you to use, copy, modify, merge, publish, distribute,
-sublicense, and/or sell copies of the software. It also provides an express disclaimer of warranty and liability.
-
-For more information, please refer to the [LICENSE](LICENSE) file.
-
----
+<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
